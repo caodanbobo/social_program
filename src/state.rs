@@ -1,5 +1,3 @@
-use std::thread::sleep;
-
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 
@@ -12,7 +10,6 @@ pub struct UserProfile {
 #[derive(BorshDeserialize, BorshSerialize, Debug)]
 pub struct UserPost {
     pub post_count: u64,
-    pub posts: Vec<Post>,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Debug)]
@@ -46,16 +43,12 @@ impl Post {
 }
 impl UserPost {
     pub fn new() -> Self {
-        Self {
-            post_count: 0,
-            posts: Vec::new(),
-        }
+        Self { post_count: 0 }
     }
-    pub fn post(&mut self, post: Post) {
-        self.posts.push(post);
-        self.post_count = self.posts.len() as u64;
+    pub fn add_post(&mut self) {
+        self.post_count += 1;
     }
-    pub fn query_posts(&self) -> &Vec<Post> {
-        self.posts.as_ref()
+    pub fn get_count(&self) -> u64 {
+        self.post_count
     }
 }
